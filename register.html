@@ -9,32 +9,38 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
     <style>
+        h1{
+            text-align: center;
+        }
     </style>
 
 </head>
 <body>
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-12">
-            <h1>TITLE</h1>
+<form>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>Register</h1>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-2" style="background-color:lavenderblush;">
+        <div class="row">
+            <div class="col-sm-2" style="background-color:lavenderblush;">
 
-            <a href="register.html">Register</a>
-            <br>
-            <a href="home.html">Home</a>
-            <br>
-            <a href="disco.html">Animation</a>
-        </div>
+                <a href="register.html">Register</a>
+                <br>
+                <a href="home.html">Home</a>
+                <br>
+                <a href="disco.html">Animation</a>
+            </div>
 
-        <div class="col-sm-5" style="background-color:lavender;">
-            <form class="" action="/action_page.php">
+            <div class="col-sm-5" style="background-color:lavender;">
                 <div class="form-group">
                     <label for="userName" class="mb-2 mr-sm-2">User Name:</label>
                     <input id="userName" class="form-control mb-2 mr-sm-2" type="text" align="right" placeholder="desiredusername"/>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="mb-2 mr-sm-2">Email:</label>
+                    <input id="email" class="form-control mb-2 mr-sm-2" placeholder="a@b.c" required>
                 </div>
 
                 <div class="form-group">
@@ -58,7 +64,7 @@
                     <label for="dOB"class="mb-2 rm-sm-2">Date of Birth</label>
                     <input id="dOB" type="date" class="form-control" name="birthday" min="1900-01-01" max="2018-12-31">
                 </div>
-                <div class="form-group" style="background-color: lime;">
+                <div class="form-group">
                     <label for="radioGender" class="mb-2 mr-sm-2">Gender:</label>
                     <div class="form-check-inline">
                         <label class="form-check-label">
@@ -76,7 +82,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="form-group" style="background-color: lightgray;">
+                <div class="form-group" >
                     <label for="radioGender" class="mb-2 mr-sm-2">Marital Status:</label>
                     <div class="form-check-inline">
                         <label class="form-check-label">
@@ -94,11 +100,11 @@
                         </label>
                     </div>
                 </div>
-            </form>
-        </div>
 
-        <div class="col-sm-5" style="background-color: aqua;">
-            <form class="">
+            </div>
+
+            <div class="col-sm-5" style="background-color: aqua;">
+
                 <div class="form-group">
                     <label for="address1" class="mb-2 mr-sm-2">Address Line 1:</label>
                     <input id="address1" class="form-control mb-2 mr-sm-2" type="text" placeholder="123 Address ave." required>
@@ -109,7 +115,7 @@
                 </div>
                 <div class="form-group">
                     <label for="addressCity" class="mb-2 mr-sm-2">City:</label>
-                    <input id="addressCity" class="form-control mb-2 mr-sm-2" type="input" placeholde="St. Louis" required >
+                    <input id="addressCity" class="form-control mb-2 mr-sm-2" type="input" placeholder="St. Louis" required >
                 </div>
                 <div class="form-group">
                     <label for="state" class=" mb-2 mr-sm-2">Select State:</label>
@@ -171,34 +177,42 @@
                 </div>
                 <div class="form-group">
                     <label for="zipCode" class="mb-2 mr-sm-2">Zip Code:</label>
-                    <input id="zipCode" class="form-control mb-2 mr-sm-2" maxlength="6" required>
+                    <input id="zipCode" class="form-control mb-2 mr-sm-2" maxlength="6" placeholder="123456" required>
                 </div>
                 <div class="form-group">
                     <label for="phoneNumber" class="mb-2 mr-sm-2">Phone Number:</label>
                     <input id="phoneNumber" class="form-control mb-2 mr-sm-2" placeholder="123-456-1234" required>
                 </div>
                 <div class="form-group">
-                    <label for="email" class="mb-2 mr-sm-2">Email:</label>
-                    <input id="email" class="form-control mb-2 mr-sm-2">
+                    <label for="submitBtn" class="mb-2 mr-sm-2" style="clear: both">This Form does nothing!<span style="float: right;"><a></a></span> </label>
+
+                    <button id="submitBtn" type="submit">Submit</button>
+                </div>
+                <div class="form-group">
+                    <button class="mb-2 mr-sm-2" type="reset" value="Reset">Clear Form</button>
                 </div>
 
 
-            </form>
-        </div>
-    </div>
-</div>
-<hr>
-<form>
-    <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
-
-    <button type="submit" class="registerbtn">Register</button>
-    <div class="container signin">
-        <p>Already have an account? <a href="#">Sign in</a>.</p>
-        <div class="row">
-            <div class="col-sm-12">
-                <h1>footer</h1>
             </div>
+
         </div>
+
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-3">
+            <a href="https://soundcloud.com/griz" target="_blank">Soundcloud</a>
+        </div>
+        <div class="col-sm-3">
+            <a href="http://www.mynameisgriz.com/" target="_blank">GRiZ</a>
+        </div>
+        <div class="col-sm-3">
+            <a href="https://en.wikipedia.org/wiki/GRiZ" target="_blank">Wiki</a>
+        </div>
+
+
     </div>
 </form>
 </body>

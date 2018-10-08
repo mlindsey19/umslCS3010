@@ -9,6 +9,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
     <style>
+        h1 {
+            text-align: center;
+        }
     </style>
 
 </head>
@@ -17,7 +20,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
-            <h1>TITLE</h1>
+            <h1>GRiZ</h1>
         </div>
     </div>
     <div class="row">
@@ -33,22 +36,75 @@
 
         <div class="col-sm-10" style="background-color:lavender;">
 
+           
+            <div id="carouselId" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselId" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselId" data-slide-to="1"></li>
+                    <li data-target="#carouselId" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    <div class="carousel-item active">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/oYVfooogWho" alt="First Slide" allowfullscreen></iframe>
+                        </div>
+                        <p></p>
+                        <div class="carousel-caption">
+                            <h3>Title</h3>
+                            <p>Description</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/Jlv6saVGWoE" alt="Second Slide" allowfullscreen></iframe>
+                        </div>
+                        <div class="carousel-caption">
+                            <h3>Title</h3>
+                            <p>Description</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/9vcFRDjyjuw" alt="Second Slide" allowfullscreen></iframe>
+                        </div>
+                        <div class="carousel-caption">
+                            <h3>Title</h3>
+                            <p>Description</p>
+                        </div>
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselId" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselId" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+
+
         </div>
     </div>
     <hr>
-    <form>
-        <p>asl;dkfja;ls  <a href="#">Terms & Privacy</a>.</p>
 
 
-        <div class="container signin">
-            <p>Already have an account? <a href="#">Sign in</a>.
-            <div class="row">
-                <div class="col-sm-12">
-                    <h1>footer</h1>
-                </div>
-            </div>
+    <div class="row">
+        <div class="col-sm-2">
         </div>
-    </form>
+        <div class="col-sm-3">
+            <a href="https://soundcloud.com/griz" target="_blank">Soundcloud</a>
+        </div>
+        <div class="col-sm-3">
+            <a href="http://www.mynameisgriz.com/" target="_blank">GRiZ</a>
+        </div>
+        <div class="col-sm-3">
+            <a href="https://en.wikipedia.org/wiki/GRiZ" target="_blank">Wiki</a>
+        </div>
+
+
+    </div>
+
 </div>
 
 </body>

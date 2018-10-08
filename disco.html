@@ -8,102 +8,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="disco.css">
+
     <title>Disco Ball</title>
-    <style>
 
-
-        #db {
-            height: 500px;
-            background-color: #333;
-            background: -webkit-linear-gradient(bottom left, #111, #222);
-            background: -moz-linear-gradient(bottom left, #111, #222);
-            background: linear-gradient(bottom left, #111, #222);
-            margin: 0;
-        }
-
-        @-webkit-keyframes rotateDiscoBall {
-            0% {-webkit-transform: rotateX(90deg) rotateZ(0deg) rotate(0deg); }
-            100% {-webkit-transform: rotateX(90deg) rotateZ(360deg) rotate(0deg); }
-        }
-
-        @keyframes rotateDiscoBall {
-            0% {transform: rotateX(90deg) rotateZ(0deg) rotate(0deg); }
-            100% {transform: rotateX(90deg) rotateZ(360deg) rotate(0deg); }
-        }
-
-        @-webkit-keyframes rotateDiscoBallMiddle {
-            0% {-webkit-transform: rotateX(90deg) rotateY(0deg) rotate(0deg); }
-            100% {-webkit-transform: rotateX(90deg) rotateY(-360deg) rotate(0deg); }
-        }
-
-        @keyframes rotateDiscoBallMiddle {
-            0% {transform: rotateX(90deg) rotateY(0deg) rotate(0deg); }
-            100% {transform: rotateX(90deg) rotateY(-360deg) rotate(0deg); }
-        }
-
-        @-webkit-keyframes reflect {
-            0% {-webkit-filter: brightness(60%);}
-            50% {-webkit-filter: brightness(120%);}
-            100% {-webkit-filter: brightness(90%);}
-        }
-
-        @keyframes reflect {
-            0% {opacity: 1;}
-            50% {opacity: 0.4;}
-            100% {opacity: 1;}
-        }
-
-        #discoBall {
-            -webkit-transform-style: preserve-3d;
-            transform-style: preserve-3d;
-            width: 100px;
-            height: 100px;
-            position: absolute;
-            top: 30%;
-            left: 30%;
-
-             -webkit-animation: rotateDiscoBall 18s linear infinite;
-            animation: rotateDiscoBall 18s linear infinite;
-        }
-
-        #discoBallLight {
-            width: 100px;
-            height: 100px;
-            position: absolute;
-            top: 30%;
-            left: 30%;
-            border-radius: 40%;
-            background-color: white;
-            opacity: 0.2;
-            -webkit-filter: blur(20px);
-        }
-
-        .square {
-            -webkit-transform-style: preserve-3d;
-            transform-style: preserve-3d;
-            position: absolute;
-            top: 50px;
-            left: 50px;
-            width: 6px;
-            height: 6px;
-            position: absolute;
-            transform: rotateX(90deg) rotateY(0deg) translateZ(0px);
-        }
-
-        #discoBallMiddle {
-            height: 100%;
-            border-radius: 100%;
-            background-color: #111;
-            position: absolute;
-            background: -webkit-linear-gradient(top, #111, #333);
-            background: -moz-linear-gradient(top, #111, #333);
-            background: linear-gradient(top, #111, #333);
-            -webkit-animation: rotateDiscoBallMiddle 18s linear infinite;
-            animation: rotateDiscoBallMiddle 18s linear infinite;
-        }
-
-
-    </style>
 </head>
 
 <body>
@@ -134,105 +42,38 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm-3">
+        </div>
+        <div class="col-sm-5">
+            <div class="slidecontainer">
+                <input type="range" min="4" max="24" value="14" class="slider" id="myRange">
+                <p>More Colors <span style="float: right">Less Colors</span></p>
+            </div>
+
+        </div>
+        <div class="col-sm-2">
+            <p><button onclick="clickCounter()" type="button">Update Colors</button></p>
+            <div id="result"></div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-3">
+            <a href="https://soundcloud.com/griz" target="_blank">Soundcloud</a>
+        </div>
+        <div class="col-sm-3">
+            <a href="http://www.mynameisgriz.com/" target="_blank">GRiZ</a>
+        </div>
+        <div class="col-sm-3">
+            <a href="https://en.wikipedia.org/wiki/GRiZ" target="_blank">Wiki</a>
+        </div>
+
+    </div>
 </div>
-<script>
-    var t = 1;
-    var radius = 50;
-    var squareSize = 6.5;
-    var prec = 19.55;
-    var fuzzy = 0.001;
-    var inc = (Math.PI-fuzzy)/prec;
-    var discoBall = document.getElementById("discoBall");
-
-    for(var t=fuzzy; t<Math.PI; t+=inc) {
-        var z = radius * Math.cos(t);
-        var currentRadius = Math.abs((radius * Math.cos(0) * Math.sin(t)) - (radius * Math.cos(Math.PI) * Math.sin(t))) / 2.5;
-        var circumference = Math.abs(2 * Math.PI * currentRadius);
-        var squaresThatFit = Math.floor(circumference / squareSize);
-        var angleInc = (Math.PI*2-fuzzy) / squaresThatFit;
-        for(var i=angleInc/2+fuzzy; i<(Math.PI*2); i+=angleInc) {
-            var square = document.createElement("div");
-            var squareTile = document.createElement("div");
-            squareTile.style.width = squareSize + "px";
-            squareTile.style.height = squareSize + "px";
-            squareTile.style.transformOrigin = "0 0 0";
-            squareTile.style.webkitTransformOrigin = "0 0 0";
-            squareTile.style.webkitTransform = "rotate(" + i + "rad) rotateY(" + t + "rad)";
-            squareTile.style.transform = "rotate(" + i + "rad) rotateY(" + t + "rad)";
-            var randomColorInt = randomNumber(0,6);
-            if((t > 1.3 && t < 1.9) || (t < -1.3 && t > -1.9)) {
-                if ( randomColorInt < 6 ){
-                    squareTile.style.backgroundColor = randomColor(randomColorInt);
-                } else {
-                    squareTile.style.backgroundColor = randomColor("bright");
-                }
-            }
-            else {
-                if ( randomColorInt < 6 ){
-                    squareTile.style.backgroundColor = randomColor(randomColorInt);
-                } else {
-                    squareTile.style.backgroundColor = randomColor("any");
-                }
-            }
-            square.appendChild(squareTile);
-            square.className = "square";
-            squareTile.style.webkitAnimation = "reflect 2s linear infinite";
-            squareTile.style.webkitAnimationDelay = String(randomNumber(0,20)/10) + "s";
-            squareTile.style.animation = "reflect 2s linear infinite";
-            squareTile.style.animationDelay = String(randomNumber(0,20)/10) + "s";
-            squareTile.style.backfaceVisibility = "hidden";
-            var x = radius * Math.cos(i) * Math.sin(t);
-            var y = radius * Math.sin(i) * Math.sin(t);
-            square.style.webkitTransform = "translateX(" + Math.ceil(x) + "px) translateY(" + y + "px) translateZ(" + z + "px)";
-            square.style.transform = "translateX(" + x + "px) translateY(" + y + "px) translateZ(" + z + "px)";
-            discoBall.appendChild(square);
-        }
-    }
-
-    function randomColor(type) {
-        var  r, g, b;
-        if(type == "bright") {
-            r = g = b = randomNumber(130, 255);
-        }
-        else if (type == 0){ //green
-            r = randomNumber(50, 130);
-            g = randomNumber(200, 280);
-            b = 0;
-        }
-        else if(type == 1){ //blue
-            r = randomNumber(30, 50);
-            g = randomNumber(200, 280);
-            b = randomNumber(200, 250);
-        }
-        else if(type == 2){ //purple
-            r = randomNumber(170, 222);
-            g = randomNumber(0, 20);
-            b = randomNumber(200, 222);
-        }
-        else if(type == 3){ //yellow
-            r = randomNumber(222, 255);
-            g = randomNumber(222, 255);
-            b = randomNumber(20, 50);
-        }
-        else if(type == 4){//orange
-            r = randomNumber(220, 250);
-            g = randomNumber(50, 90);
-            b = randomNumber(20, 40);
-        }
-        else if(type == 5){//red
-            r = randomNumber(170, 222);
-            g = randomNumber(0, 22);
-            b = randomNumber(50, 85);
-        }
-        else {
-            r = g = b = randomNumber(110, 190);
-        }
-        return "rgb(" + r + "," + g + "," + b + ")";
-    }
-
-    function randomNumber(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-</script>
+<script src="disco.js"></script>
 </body>
 </html>
