@@ -4,20 +4,131 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+
 
     <style>
         h1{
             text-align: center;
         }
+        .isNotValid{
+           border-color: red;
+        }
+        .isValid{
+            border-color: green;
+        }
+
+
     </style>
 
 </head>
-<body>
-<form>
-    <div class="container-fluid">
+<script>
+    function ValEmail(ele){
+        var reg = /\S+@\S+\.\S+/;
+        var val = ele.value;
+        if (val.length > 256 || !reg.test(val)){
+            var check = document.getElementById("emailError");
+            if (check){
+                check.innerHTML = "Enter a valid email";
+            }
+        } else {
+            document.getElementById("emailError")
+                .innerHTML = "";
+        }
+    }
+</script>
+<body ng-app="myApp" >
+<script>var myApp = angular.module('myApp', []);
+
+myApp.controller('MyCtrl', function($scope) {
+    $scope.currencyVal;
+});
+
+myApp.directive('phoneInput', function($filter, $browser) {
+    return {
+        require: 'ngModel',
+        link: function($scope, $element, $attrs, ngModelCtrl) {
+            var listener = function() {
+                var value = $element.val().replace(/[^0-9]/g, '');
+                $element.val($filter('tel')(value, false));
+            };
+
+            // This runs when we update the text field
+            ngModelCtrl.$parsers.push(function(viewValue) {
+                return viewValue.replace(/[^0-9]/g, '').slice(0,10);
+            });
+
+            // This runs when the model gets updated on the scope directly and keeps our view in sync
+            ngModelCtrl.$render = function() {
+                $element.val($filter('tel')(ngModelCtrl.$viewValue, false));
+            };
+
+            $element.bind('change', listener);
+            $element.bind('keydown', function(event) {
+                var key = event.keyCode;
+                // If the keys include the CTRL, SHIFT, ALT, or META keys, or the arrow keys, do nothing.
+                // This lets us support copy and paste too
+                if (key == 91 || (15 < key && key < 19) || (37 <= key && key <= 40)){
+                    return;
+                }
+                $browser.defer(listener); // Have to do this or changes don't get picked up properly
+            });
+
+            $element.bind('paste cut', function() {
+                $browser.defer(listener);
+            });
+        }
+
+    };
+});
+myApp.filter('tel', function () {
+    return function (tel) {
+        console.log(tel);
+        if (!tel) { return ''; }
+
+        var value = tel.toString().trim().replace(/^\+/, '');
+
+        if (value.match(/[^0-9]/)) {
+            return tel;
+        }
+
+        var country, city, number;
+
+        switch (value.length) {
+            case 1:
+            case 2:
+            case 3:
+                city = value;
+                break;
+
+            default:
+                city = value.slice(0, 3);
+                number = value.slice(3);
+        }
+
+        if(number){
+            if(number.length>3){
+                number = number.slice(0, 3) + '-' + number.slice(3,7);
+            }
+            else{
+                number = number;
+            }
+
+            return ("(" + city + ") " + number).trim();
+        }
+        else{
+            return "(" + city;
+        }
+
+    };
+});</script>
+<form name="registerForm" role="form" novalidate>
+    <div class="container-fluid ">
         <div class="row">
             <div class="col-sm-12">
                 <h1>Register</h1>
@@ -33,36 +144,116 @@
                 <a href="disco.html">Animation</a>
             </div>
 
-            <div class="col-sm-5" style="background-color:lavender;">
-                <div class="form-group">
-                    <label for="userName" class="mb-2 mr-sm-2">User Name:</label>
-                    <input id="userName" class="form-control mb-2 mr-sm-2" type="text" align="right" placeholder="desiredusername"/>
+            <div class="col-sm-5 " style="background-color:lavender;">
+                <div  class="form-group form-row" >
+                    <label for="username" class="mb-2 mr-sm-2">User Name:</label>
+                    <input id="username" name="username" class="form-control mb-2 mr-sm-2" type="text"
+                           placeholder="desiredUsername123" ng-model="username" ng-required="true"
+                           ng-minlength="6" ng-maxlength="50" required
+                           ng-class="{'isNotValid':
+                                            registerForm.username.$touched &&
+                                            (registerForm.username.$error.required ||
+                                            registerForm.username.$error.minlength ||
+                                            registerForm.username.$error.minlength) ,
+                                       'isValid':
+                                            registerForm.username.$valid }"/>
+                    <span ng-show="registerForm.username.$touched && registerForm.username.$error.required">
+                        Username is required!</span>
+                    <span ng-show="registerForm.username.$touched && registerForm.username.$error.minlength">min 6 chars.</span>
+                    <span ng-show="registerForm.username.$touched && registerForm.username.$error.maxlength">Max 50 chars.</span>
                 </div>
-                <div class="form-group">
+
+
+                <div  class="form-group">
                     <label for="email" class="mb-2 mr-sm-2">Email:</label>
-                    <input id="email" class="form-control mb-2 mr-sm-2" placeholder="a@b.c" required>
+                    <input id="email" name="email" type="email" class="form-control mb-2 mr-sm-2" placeholder="aa@bb.cc"
+                           ng-model="email" ng-required="true" required ng-pattern="/\S+@\S+\.\S+/"
+                           ng-class="{'isNotValid':
+                                            registerForm.email.$touched &&
+                                            (registerForm.email.$error.required ||
+                                            registerForm.email.$invalid),
+                                       'isValid':
+                                            registerForm.email.$valid }">
+                    <span ng-show="registerForm.email.$touched && registerForm.email.$error.required">
+                        Email is required!</span>
                 </div>
 
-                <div class="form-group">
+
+                <div  class="form-group">
                     <label for="password" class="mb-2 mr-sm-2">Password:</label>
-                    <input id="password" class="form-control mb-2 mr-sm-2" type="password" placeholder="password"/>
+                    <input id="password" name="password" class="form-control mb-2 mr-sm-2" type="password"
+                           placeholder="password"
+                           ng-model="password" ng-required="true" required
+                           ng-pattern=" /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/"
+                           ng-minlength="8" ng-maxlength="50"
+                           ng-class="{'isNotValid':
+                                            registerForm.password.$touched &&
+                                            (registerForm.password.$error.required ||
+                                            registerForm.password.$invalid ||
+                                            registerForm.password.$error.minlength ||
+                                            registerForm.password.$error.minlength),
+                                       'isValid':
+                                            registerForm.password.$valid }"/>
+                    <span ng-show="registerForm.password.$touched && registerForm.password.$invalid">
+                        One of each: upper case, lower, number, and special character; 8-50 characters </span>
                 </div>
 
-                <div class="form-group">
+
+                <div  class="form-group">
                     <label for="passwordCheck" class="mb-2 mr-sm-2">Re-Enter Password:</label>
-                    <input id="passwordCheck" class=" form-control mb-2 mr-sm-2" type="password" placeholder="password" />
+                    <input id="passwordCheck" name="passwordCheck" class=" form-control mb-2 mr-sm-2" type="password" placeholder="password"
+                           ng-model="passwordCheck" ng-required="true" required
+                           ng-class="{'isNotValid':
+                                            registerForm.passwordCheck.$touched &&
+                                            (registerForm.passwordCheck.$error.required ||
+                                            registerForm.passwordCheck.$invalid),
+                                       'isValid':
+                                            (registerForm.passwordCheck.value == registerFrom.password.value) &&
+                                            registerForm.passwordCheck.$valid }"/>
                 </div>
-                <div class="form-group">
+
+
+                <div  class="form-group">
                     <label for="firstName" class="mb-2 mr-sm-2">First Name:</label>
-                    <input id="firstName" class="form-control mb-2 mr-sm-2" type="text" placeholder="First Name">
+                    <input id="firstName" name="firstName" class="form-control mb-2 mr-sm-2" type="text"
+                           placeholder="First Name" ng-model="firstName" ng-required="true"  ng-maxlength="50"
+                            required
+                           ng-class="{'isNotValid':
+                                            registerForm.firstName.$touched &&
+                                            (registerForm.firstName.$error.required ||
+                                            registerForm.firstName.$invalid ||
+                                            registerForm.firstName.$error.minlength ||
+                                            registerForm.firstName.$error.minlength),
+                                       'isValid':
+                                            registerForm.firstNAme.$valid }"/>
+                    <span ng-show="registerForm.firstName.$touched && registerForm.firstName.$error.required">
+                        First Name is required!</span>
+                    <span ng-show="registerForm.firstName.$touched && registerForm.firstName.$error.maxlength">Max 50 chars.</span>
                 </div>
-                <div class="form-group">
+
+
+                <div  class="form-group">
                     <label for="lastName" class="mb-2 mr-sm-2">Last Name:</label>
-                    <input id="lastName" class="form-control mb-2 mr-sm-2" type="text" placeholder="Last Name">
+                    <input id="lastName" name="lastName" class="form-control mb-2 mr-sm-2" type="text" placeholder="Last Name"
+                           ng-model="lastName" ng-required="true"  ng-maxlength="50" required
+                           ng-class="{'isNotValid':
+                                            registerForm.lastName.$touched &&
+                                            (registerForm.lastName.$error.required ||
+                                            registerForm.lastName.$invalid ||
+                                            registerForm.lastName.$error.minlength ||
+                                            registerForm.lastName.$error.minlength),
+                                       'isValid':
+                                            registerForm.lastName.$valid }"/>
+                    <span ng-show="registerForm.lastName.$touched && registerForm.lastName.$error.required">
+                        Last Name is required!</span>
+                    <span ng-show="registerForm.lastName.$touched && registerForm.lastName.$error.maxlength">Max 50 chars.</span>
                 </div>
+
+
                 <div class="form-group">
                     <label for="dOB"class="mb-2 rm-sm-2">Date of Birth</label>
-                    <input id="dOB" type="date" class="form-control" name="birthday" min="1900-01-01" max="2018-12-31">
+                    <input id="dOB" type="date" class="form-control" name="birthday" min="1900-01-01" max="2018-12-31"
+                    required>
                 </div>
                 <div class="form-group">
                     <label for="radioGender" class="mb-2 mr-sm-2">Gender:</label>
@@ -107,16 +298,29 @@
 
                 <div class="form-group">
                     <label for="address1" class="mb-2 mr-sm-2">Address Line 1:</label>
-                    <input id="address1" class="form-control mb-2 mr-sm-2" type="text" placeholder="123 Address ave." required>
+                    <input id="address1" name="address1" class="form-control mb-2 mr-sm-2" type="text"
+                           placeholder="123 Address ave." ng-model="address1" nig-required="true" ng-maxlength="100">
+                    <span ng-show="registerForm.address1.$touched && registerForm.address1.$error.required">
+                        Address is required!</span>
+                    <span ng-show="registerForm.address1.$touched && registerForm.address1.$error.maxlength">Max 100 chars.</span>
                 </div>
+
+
                 <div class="form-group">
                     <label for="address2" class="mb-2 mr-sm-2">Address Line 2:</label>
-                    <input id="address2" class="form-control mb-2 mr-sm-2" type="text" placeholder="apt. 2c">
+                    <input id="address2" class="form-control mb-2 mr-sm-2" type="text" placeholder="apt. 2c"
+                           ng-model="address2"  ng-maxlength="100">
+                    <span ng-show="registerForm.address2.$touched && registerForm.address2.$error.maxlength">Max 100 chars.</span>
+
                 </div>
+
+
                 <div class="form-group">
-                    <label for="addressCity" class="mb-2 mr-sm-2">City:</label>
-                    <input id="addressCity" class="form-control mb-2 mr-sm-2" type="input" placeholder="St. Louis" required >
+                    <label for="city" nam="city" class="mb-2 mr-sm-2">City:</label>
+                    <input id="city" class="form-control mb-2 mr-sm-2" type="input" placeholder="St. Louis" required >
                 </div>
+
+
                 <div class="form-group">
                     <label for="state" class=" mb-2 mr-sm-2">Select State:</label>
                     <select class="form-control mb-2 mr-sm-2" id="state" name="state">
@@ -175,13 +379,18 @@
                         <option value="WY">Wyoming</option>
                     </select>
                 </div>
+
+
                 <div class="form-group">
                     <label for="zipCode" class="mb-2 mr-sm-2">Zip Code:</label>
-                    <input id="zipCode" class="form-control mb-2 mr-sm-2" maxlength="6" placeholder="123456" required>
+                    <input id="zipCode" name="zipCode" ng-model="zipCode" class="form-control mb-2 mr-sm-2"
+                           placeholder="12345-xxxxx" >
                 </div>
-                <div class="form-group">
+
+
+                <div class="form-group ng-controller='myCtrl' ">
                     <label for="phoneNumber" class="mb-2 mr-sm-2">Phone Number:</label>
-                    <input id="phoneNumber" class="form-control mb-2 mr-sm-2" placeholder="123-456-1234" required>
+                    <input id="phoneNumber" phone-input class=" form-control mb-2 mr-sm-2" placeholder="123-456-1234" required>
                 </div>
                 <div class="form-group">
                     <label for="submitBtn" class="mb-2 mr-sm-2" style="clear: both">This Form does nothing!<span style="float: right;"><a></a></span> </label>
@@ -198,23 +407,25 @@
         </div>
 
     </div>
-    <hr>
-    <div class="row">
-        <div class="col-sm-2">
-        </div>
-        <div class="col-sm-3">
-            <a href="https://soundcloud.com/griz" target="_blank">Soundcloud</a>
-        </div>
-        <div class="col-sm-3">
-            <a href="http://www.mynameisgriz.com/" target="_blank">GRiZ</a>
-        </div>
-        <div class="col-sm-3">
-            <a href="https://en.wikipedia.org/wiki/GRiZ" target="_blank">Wiki</a>
-        </div>
-
-
-    </div>
 </form>
+<hr>
+<div class="row">
+    <div class="col-sm-2">
+    </div>
+    <div class="col-sm-3">
+        <a href="https://soundcloud.com/griz" target="_blank">Soundcloud</a>
+    </div>
+    <div class="col-sm-3">
+        <a href="http://www.mynameisgriz.com/" target="_blank">GRiZ</a>
+    </div>
+    <div class="col-sm-3">
+        <a href="https://en.wikipedia.org/wiki/GRiZ" target="_blank">Wiki</a>
+    </div>
+
+
+</div>
+
+<script src="valid.js"></script>
 </body>
 </html>
 
